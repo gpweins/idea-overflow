@@ -19,31 +19,56 @@ Make sure Docker is running on your system. The project uses Docker Compose to b
 
 ### Starting the Environment
 
-From the root directory of your project, run:
+From the root directory of your project:
 
-```bash
-docker-compose up -d
-```
+1. Copy the example environment file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Start the Docker services:
+
+   ```bash
+   docker-compose up -d
+   ```
 
 This command will build the custom PHP image and start all the services in the background.
 
-## 2. Running Laravel Migrations
+## 2. Setting Up Dependencies and Running Migrations
 
-Once your Docker containers are running, use the PHP container to run database migrations.
+Follow these steps to prepare your application:
 
-1. Open a shell into the PHP container:
+1. Open a shell into the PHP container (php-fpm as specified in docker-compose.yml):
 
-    ```bash
-    docker-compose exec php bash
-    ```
+   ```bash
+   docker-compose exec php-fpm sh
+   ```
 
-2. Run the Laravel migrations:
+2. Install PHP dependencies via Composer:
 
-    ```bash
-    php artisan migrate
-    ```
+   ```bash
+   composer install
+   ```
 
-This will execute all of your Laravel migrations, setting up the database schema for your application.
+3. Generate the application key:
+
+   ```bash
+   php artisan key:generate
+   ```
+
+4. Run the Laravel migrations:
+
+   ```bash
+   php artisan migrate
+   ```
+
+5. Install Node dependencies and compile assets:
+
+   ```bash
+   npm install
+   npm run dev
+   ```
 
 ## 3. Additional Notes
 
