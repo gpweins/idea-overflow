@@ -31,9 +31,10 @@ RUN apk update \
         postgresql-dev \
         unzip \
         zip \
+    && pecl install redis \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_pgsql zip \
-    && docker-php-ext-enable opcache \
+    && docker-php-ext-enable opcache redis.so \
     && apk del .build-deps
 
 # Copy project to image

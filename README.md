@@ -49,4 +49,3 @@ This will execute all of your Laravel migrations, setting up the database schema
 
 - Update your .env file as necessary to match your local setup (especially the database and caching configurations).
 - Logs for Nginx are stored in ./storage/logs/nginx, and you can view them to debug any issues with SSL or routing.
-
