@@ -1,0 +1,52 @@
+# Project Setup
+
+This project uses Docker to manage its services and provides scripts to generate SSL certificates for local HTTPS development. Follow these steps after cloning the repository.
+
+## Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) must be installed on your machine.
+- [Docker Compose](https://docs.docker.com/compose/install/) (usually comes with Docker Desktop).
+
+## 1. Set Up Docker Environment
+
+Make sure Docker is running on your system. The project uses Docker Compose to build and run the following services:
+
+- **PHP-FPM**: Custom PHP-FPM container (built from `.docker/php/Dockerfile`).
+- **Nginx**: Using the `nginx:alpine` image.
+- **Mailpit**: For capturing outgoing emails.
+- **Redis**: For caching, session and queue management.
+- **Postgres**: For the database.
+
+### Starting the Environment
+
+From the root directory of your project, run:
+
+```bash
+docker-compose up -d
+```
+
+This command will build the custom PHP image and start all the services in the background.
+
+## 2. Running Laravel Migrations
+
+Once your Docker containers are running, use the PHP container to run database migrations.
+
+1. Open a shell into the PHP container:
+
+    ```bash
+    docker-compose exec php bash
+    ```
+
+2. Run the Laravel migrations:
+
+    ```bash
+    php artisan migrate
+    ```
+
+This will execute all of your Laravel migrations, setting up the database schema for your application.
+
+## 3. Additional Notes
+
+- Update your .env file as necessary to match your local setup (especially the database and caching configurations).
+- Logs for Nginx are stored in ./storage/logs/nginx, and you can view them to debug any issues with SSL or routing.
+
