@@ -1,0 +1,77 @@
+services:
+  php-fpm:
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+    container_name: php-fpm
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www/html
+    ports:
+      - "${PHP_PORT:-9000}:9000"
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - default
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "${APP_PORT:-8080}:80"
+      - "${APP_PORT_SSL:-8443}:443"
+    volumes:
+      - ./:/var/www/html
+      - .docker/nginx/conf.d:/etc/nginx/conf.d
+      - .docker/nginx/certificates:/etc/ssl/private
+      - ./storage/logs/nginx:/var/log/nginx
+    depends_on:
+      - php-fpm
+    networks:
+      - default
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    ports:
+      - "1025:1025"  # SMTP port
+      - "8025:8025"  # Web UI port
+    volumes:
+      - mailpit_data:/data
+    restart: unless-stopped
+    networks:
+      - default
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - default
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-ideaoverflow}
+      POSTGRES_USER: ${DB_USERNAME:-root}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-root}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  mailpit_data:
