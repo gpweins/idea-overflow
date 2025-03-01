@@ -46,7 +46,8 @@ COPY --from=vendor /usr/bin/composer /usr/bin/composer
 # Node
 COPY --from=frontend /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=frontend /usr/local/bin/node /usr/local/bin/node
-RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && npm install -g npx
 
 # Set working directory
 WORKDIR /var/www/html
