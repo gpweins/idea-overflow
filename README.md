@@ -70,7 +70,27 @@ Follow these steps to prepare your application:
    npm run dev
    ```
 
-## 3. Additional Notes
+## 3. SSL Certificate Generation
+
+The project includes a script to generate SSL certificates for local HTTPS development. To generate the certificates, follow these steps:
+
+1. Navigate to the project root directory.
+
+2. Run the certificate generation script located in `.docker/scripts` by executing:
+
+   ```bash
+   ./docker/scripts/generate_certificate.sh ideaoverflow.local
+   ```
+
+3. The script will generate two folders under `.docker/nginx/certificates`:
+   - `ca`: Contains the Certificate Authority files.
+   - `client`: Contains the files that should be included in the NGINX configuration.
+
+4. Add the CA `.pem` file from the `ca` folder to your system's Certificate Manager.
+
+## 4. Additional Notes
 
 - Update your .env file as necessary to match your local setup (especially the database and caching configurations).
 - Logs for Nginx are stored in ./storage/logs/nginx, and you can view them to debug any issues with SSL or routing.
+- Ensure you generate the SSL certificates and add the CA certificate from the `ca` folder to your system's Certificate Manager.
+- Add "127.0.0.1 ideaoverflow.local" to your hosts file.
