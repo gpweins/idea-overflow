@@ -23,6 +23,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.nova
+/.npm
 /.vscode
 /.zed
 .DS_Store
