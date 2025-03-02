@@ -24,7 +24,7 @@ services:
     volumes:
       - ./:/var/www/html
       - .docker/nginx/conf.d:/etc/nginx/conf.d
-      - .docker/nginx/certificates:/etc/ssl/private
+      - .docker/nginx/certificates/client:/etc/ssl/private
       - ./storage/logs/nginx:/var/log/nginx
     depends_on:
       - php-fpm
